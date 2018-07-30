@@ -61,6 +61,7 @@ typings/
 # dotenv environment variables file
 .env
 
-/MFBGB-pm2-config.json
-/MFBGB-pm2.bat
+/MFBAcvr-pm2-config.json
+/MFBAcvr-pm2.bat
 /valuePerGuild.js
+/commands/!test.js
