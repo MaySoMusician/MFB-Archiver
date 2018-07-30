@@ -31,7 +31,7 @@
     "enmap": "^2.0.4",
     "enmap-level": "^2.0.2",
     "erlpack": "github:discordapp/erlpack",
-    "ffmpeg-binaries": "^3.2.2",
+    "ffmpeg-binaries": "^3.2.2-3",
     "libsodium-wrappers": "^0.7.3",
     "moment": "^2.21.0",
     "moment-duration-format": "^2.2.2",
