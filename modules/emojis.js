@@ -1,5 +1,5 @@
 module.exports = (MFBAcvr) => {
-  MFBGB.emojisByName = {
+  MFBAcvr.emojisByName = {
     'stopwatch': '\u23f1',
     'timer': '\u23f2',
     'information_source': '\u2139',

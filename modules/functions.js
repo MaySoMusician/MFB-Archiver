@@ -66,7 +66,7 @@ module.exports = (MFBAcvr) => {
   MFBAcvr.loadCommand = (commandName) => {
     try {
       const props = require(`../commands/${commandName}`);
-      MFBAcvr.logger.log(`|MFBAcvr| Loading Command: ${props.help.name}.`);
+      MFBAcvr.logger.log(`Loading Command: ${props.help.name}.`);
       if (props.init) {
         props.init(MFBAcvr);
       }

@@ -63,7 +63,7 @@ ${message.content}
         message.flags.push(args.shift().slice(1));
       }
       // If the command exists, **AND** the user has permission, run it.
-      MFBAcvr.logger.cmd(`|MFBAcvr| ${levelName} の ${message.author.username}(${message.author.id}) が${cmd.help.name}コマンドを実行しました`);
+      MFBAcvr.logger.cmd(`${levelName} の ${message.author.username}(${message.author.id}) が${cmd.help.name}コマンドを実行しました`);
       cmd.run(MFBAcvr, message, args);
     } 
   }

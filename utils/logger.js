@@ -7,6 +7,7 @@ const moment = require("moment");
 
 exports.log = (content, type = "LOG") => {
   const timestamp = `[${moment().format("YYYY-MM-DD HH:mm:ss")}]:`;
+  content = "|MFBAcvr| " + content;
   switch (type) {
     case "LOG": {
       return console.log(`${timestamp} ${chalk.bgBlue(type.toUpperCase())} ${content} `);
