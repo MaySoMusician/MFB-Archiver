@@ -34,6 +34,8 @@ require("./modules/functions.js")(MFBAcvr);
 // Initialize Emojis
 require("./modules/emojis.js")(MFBAcvr);
 
+require("./modules/recording.js")(MFBAcvr);
+
 // 内部処理用関数読み込み
 //require("./modules/scheduler.js")(XPBot);
 
@@ -56,7 +58,7 @@ const init = async () => {
 
   // Here we load **commands** into memory, as a collection, so they're accessible here and everywhere else.
   const cmdFiles = await readdir("./commands/");
-  MFBAcvr.logger.log(`|MFBAcvr| Loading a total of ${cmdFiles.length} commands...`);
+  MFBAcvr.logger.log(`Loading a total of ${cmdFiles.length} commands...`);
   cmdFiles.forEach(f => {
     if(!f.endsWith(".js")) return; // if it's not js file, just ignore it.
     const response = MFBAcvr.loadCommand(f);
@@ -65,7 +67,7 @@ const init = async () => {
 
   // Then we load events, which will include our message and ready event.
   const evtFiles = await readdir("./events/");
-  MFBAcvr.logger.log(`|MFBAcvr| Loading a total of ${evtFiles.length} events...`);
+  MFBAcvr.logger.log(`Loading a total of ${evtFiles.length} events...`);
   evtFiles.forEach(file => {
     const eventName = file.split(".")[0];
     const event = require(`./events/${file}`);
