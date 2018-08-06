@@ -21,7 +21,7 @@ exports.run = async (MFBAcvr, message, args) => {// eslint-disable-line no-unuse
 exports.conf = {
   enabled: true,
   guildOnly: false,
-  aliases: [],
+  aliases: ["reb"],
   permLevel: "OWN"
 };
 
