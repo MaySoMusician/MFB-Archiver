@@ -35,6 +35,7 @@ require("./modules/functions.js")(MFBAcvr);
 require("./modules/emojis.js")(MFBAcvr);
 
 require("./modules/recording.js")(MFBAcvr);
+require("./modules/cooking.js")(MFBAcvr);
 
 // 内部処理用関数読み込み
 //require("./modules/scheduler.js")(XPBot);
