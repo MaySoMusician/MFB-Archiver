@@ -22,6 +22,8 @@ module.exports = (MFBAcvr) => {
   MFBAcvr.recorder = {};
   MFBAcvr.recorder.cmds = {};
   
+  MFBAcvr.recorder.activeRecs = {};
+  
   const session = (rec) => {
     // 'rec' is an object containing several items
     let connection = rec.connection,
@@ -122,7 +124,8 @@ module.exports = (MFBAcvr) => {
     let encodeChunk = (user, oggStream, streamNo, packetNo, chunk) => {
       let chunkGranule = chunk.time;
 
-      if(chunk.length > 4 && chunk[0] === 0xbe && chunk[1] === 0xde){ // When there is an RTP header extension
+      // Old Method
+      /*if(chunk.length > 4 && chunk[0] === 0xbe && chunk[1] === 0xde){ // When there is an RTP header extension
         let rtpHLen = chunk.readUInt16BE(2),
             offset = 4;
 
@@ -132,6 +135,22 @@ module.exports = (MFBAcvr) => {
         }
         while (offset < chunk.length && chunk[offset] === 0) offset++;
         if(offset >= chunk.length) offset = chunk.length;
+
+        chunk = chunk.slice(offset);
+      }*/
+      
+      if(chunk.length > 4 && chunk[0] === 0xbe && chunk[1] === 0xde){ // When there is an RTP header extension
+        let rtpHLen = chunk.readUInt16BE(2),
+            offset = 4;
+
+        for(let rhs = 0; rhs < rtpHLen; rhs++){
+          const byte = chunk[offset];
+          offset++;
+          if(byte === 0) continue;
+          offset += 1 + (0b1111 & (byte >> 4));
+        }
+        while (chunk[offset] === 0) offset++;
+        //if(offset >= chunk.length) offset = chunk.length;
 
         chunk = chunk.slice(offset);
       }
@@ -250,8 +269,12 @@ module.exports = (MFBAcvr) => {
      * cf. https://github.com/abalabahaha/eris/blob/master/lib/voice/VoiceConnection.js#L626
      *     https://github.com/discordjs/discord.js/blob/stable/src/client/voice/receiver/VoiceReceiver.js#L148
      */
-    let newHandlePacket = (msg, userID) => {
-      let nonce = Buffer.alloc(24);
+    let newHandlePacket = (msg, user) => {
+      let nonce = Buffer.alloc(24),
+          userID;
+      if(user) userID = user.id;
+      else userID = '00000000';
+          //userID = user.id;
       nonce.fill(0);
       msg.copy(nonce, 0, 0, 12);
       let chunk = sodium.crypto_secretbox_open_easy(msg.slice(12), nonce, connection.authentication.secretKey.key);
@@ -263,31 +286,22 @@ module.exports = (MFBAcvr) => {
       chunk.timestamp = nonce.readUIntBE(4, 4);
       // timestamp = nonce.readUIntBE(4, 4);
       // emit data event (chunk, user, timestamp)
-      let user = MFBAcvr.users.get(userID);
-      if(!user){
-        user = connection.channel.guild.members.get(userID);
-        if(user){
-          user = user.user;
-        } else if(userID === MFBAcvr.user.id){ // Ignore it if it's me
-          return;
-        } else{ // When the bot doesn't know this user
-          user = {
-            id: userID,
-            tag: "UNKNOWN#0000",
-            unknown: true
-          };
-          if(typeof(userID) === "undefined"){ // If it's weird data, log it to the extra file
-            try{
-              if(!recOgg2Stream) recOgg2Stream = new ogg.OggEncoder(fs.createWriteStream(recFilePathBase + ".data2"));
-              let chunkTime = process.hrtime(startTime);
-              chunk.time = chunkTime[0] * 48000 + ~~(chunkTime[1] / 20833.333); // ~~ is a operator of rounding off
-              encodeChunk(user, recOgg2Stream, 0, 0, chunk);
-            } catch(ex){
-              MFBAcvr.logger.error("CATCHED EX (Ogg2Stream): " + ex.stack + "");
-            }
-            return;
-          }
+      
+      if(!user){ // If it's weird data, log it to the extra file
+        user = {
+          id: userID,
+          tag: "UNKNOWN#0000",
+          unknown: true
+        };
+        try{
+          if(!recOgg2Stream) recOgg2Stream = new ogg.OggEncoder(fs.createWriteStream(recFilePathBase + ".data2"));
+          let chunkTime = process.hrtime(startTime);
+          chunk.time = chunkTime[0] * 48000 + ~~(chunkTime[1] / 20833.333); // ~~ is a operator of rounding off
+          encodeChunk(user, recOgg2Stream, 0, 0, chunk);
+        } catch(ex){
+          MFBAcvr.logger.error("CATCHED EX (Ogg2Stream): " + ex.stack + "");
         }
+        return;
       }
       return onReceive(user, chunk);
     };
@@ -345,6 +359,7 @@ module.exports = (MFBAcvr) => {
 
 
       // [Start finalization of recording?]
+      MFBAcvr.cooker.cmds.cook(id);
 
       // Callback
       rec.close();
@@ -378,8 +393,6 @@ module.exports = (MFBAcvr) => {
     let interval = setInterval(catchConnection, 200);
     return cnc;
   };
-  
-  MFBAcvr.recorder.activeRecs = {};
   
   // options = {noSilenceDisconnect}
   //MFBAcvr.recorder.cmds.start = (guild, channel, {noSilenceDisconnect = false}) => {

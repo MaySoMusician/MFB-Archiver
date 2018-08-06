@@ -46,7 +46,7 @@ OggEncoder.prototype.write = function(granulePos, streamNo, packetNo, chunk, fla
   header.writeUInt8(lengthBytes - 1, 26);
   
   // And the segment lengths themselves
-  let i = 17;
+  let i = 27;
   if(chunk.length) {
     let r = chunk.length;
     while(r > 255){

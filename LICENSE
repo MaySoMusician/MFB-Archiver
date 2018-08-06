@@ -29,7 +29,13 @@ licensed under ISC License
 /audio-cooker/src/oggmultiplexer.c
 /audio-cooker/src/oggstender.c
 /audio-cooker/src/wavduration.c
-/audio-cooker/duration.sh
+/audio-cooker/cook.sh
+/audio-cooker/oggduration
+/audio-cooker/oggmultiplexer
+/audio-cooker/oggstender
+/audio-cooker/recinfo.js
+/audio-cooker/userinfo.js
+/audio-cooker/wavduration
 /events/guildUpdate.js (partialy)
 /events/voiceStateUpdate.js (partialy)
 /modules/oggEncoder.js
