@@ -18,10 +18,8 @@ module.exports = (MFBAcvr, oldMember, newMember) => {
   };
   
   if(oldMember.voiceChannel && newMember.voiceChannel && oldMember.voiceChannel.id !== newMember.voiceChannel.id){
-    console.log("Switch 1");
     onVCSwitch(newMember, newMember.voiceChannel, oldMember.voiceChannel);
   } else if(oldMember.voiceChannel && !newMember.voiceChannel){
-    console.log("Switch 2");
     onVCSwitch(oldMember, null, oldMember.voiceChannel);
   }
   
