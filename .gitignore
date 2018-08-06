@@ -64,5 +64,5 @@ typings/
 /MFBAcvr-pm2-config.json
 /MFBAcvr-pm2.bat
 /valuePerGuild.js
-/commands/!test.js
+/commands/!*.js
 /bak
