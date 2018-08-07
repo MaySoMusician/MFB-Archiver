@@ -37,21 +37,10 @@ require("./modules/emojis.js")(MFBAcvr);
 require("./modules/recording.js")(MFBAcvr);
 require("./modules/cooking.js")(MFBAcvr);
 
-// 内部処理用関数読み込み
-//require("./modules/scheduler.js")(XPBot);
-
-// タスクスケジューラー読み込み
-//XPBot.db.taskScdDB.loadTasksNotYet();
 // Commands are put in collections where they can be read from, catalogued, listed, etc.
 MFBAcvr.commands = new Enmap();
 // So aliases are
 MFBAcvr.aliases = new Enmap(); 
-
-// ******** OBSOLETED ********
-// Now we integrate the use of Evie's awesome Enhanced Map module, which essentially saves a collection to disk.
-// This is great for per-server configs, and makes things extremely easy for this purpose.
-//MFBAcvr.settings = new Enmap({provider: new EnmapLevel({name: "settings"})});
-// ******** OBSOLETED ********
 
 // We're doing real fancy node 8 async/await stuff here, and to do that
 // we need to wrap stuff in an anonymous function. It's annoying but it works.

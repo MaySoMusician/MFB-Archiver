@@ -6,10 +6,6 @@ exports.run = async (MFBAcvr, message, args) => {// eslint-disable-line no-unuse
   MFBAcvr.commands.forEach(async cmd => {
     await MFBAcvr.unloadCommand(cmd);
   });
-
-  /*for(dbName in XPBot.db){
-    await XPBot.db[dbName].closeFromDB();
-  }*/
   
   msgDying.delete().then(()=> {
     MFBAcvr.user.setStatus("invisible");
