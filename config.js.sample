@@ -1,0 +1,44 @@
+const config = {
+  // Bot Owner, level 9 by default. A User ID. Should never be anything else than the bot owner's ID.
+  "ownerID": "<Owner ID>",
+  
+  // Staffs, level 5 by default. Array of user ID strings.
+  "staffs": [],
+
+  // Bot's Token. Check on https://discordapp.com/developers/applications/me
+  "token": "<Your token>",
+  
+  // Discord guild for front-end logging. A Guild ID.
+  "logGuild": '<Logger guild>',
+  
+  // Prefix of commands. Strings
+  "prefix": "r!",
+
+  // PERMISSION LEVEL DEFINITIONS
+  permLevels: [
+    // This is the lowest permisison level, this is for non-roled users.
+    { level: 0,
+     index: "USR",
+     name: "Users", 
+     // Don't bother checking, just return true which allows them to execute any command their level allows them to.
+     check: () => true
+    },
+
+    { level: 5,
+     index: "STF",
+     name: "Staffs",
+     check: (message) => config.staffs.includes(message.author.id)
+    },
+
+    // This is the bot owner, this should be the highest permission level available.
+    // The reason this should be the highest level is because of dangerous commands such as eval or exec (if the owner has that).
+    { level: 9,
+     index: "OWN",
+     name: "The Owner", 
+     // Another simple check, compares the message author id to the one stored in the config file.
+     check: (message) => config.ownerID === message.author.id
+    }
+  ]
+};
+
+module.exports = config;
