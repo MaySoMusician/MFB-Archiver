@@ -10,16 +10,16 @@ exports.log = (content, type = "LOG") => {
   content = "|MFBAcvr| " + content;
   switch (type) {
     case "LOG": {
-      return console.log(`${timestamp} ${chalk.bgBlue(type.toUpperCase())} ${content} `);
+      return console.log(`${timestamp} ${chalk.bold.bgBlueBright(type.toUpperCase())} ${content} `);
     }
     case "WAR": {
-      return console.error(`${timestamp} ${chalk.black.bgYellow(type.toUpperCase())} ${content} `);
+      return console.error(chalk.yellowBright(`${timestamp} ${chalk.black.bgYellowBright(type.toUpperCase())} ${content} `));
     }
     case "ERR": {
-      return console.error(`${timestamp} ${chalk.bgRed(type.toUpperCase())} ${content} `);
+      return console.error(chalk.redBright.bgWhite(`${timestamp} ${chalk.white.bold.bgRedBright(type.toUpperCase())} ${content} `));
     }
     case "DBG": {
-      return console.log(`${timestamp} ${chalk.green(type.toUpperCase())} ${content} `);
+      return console.log(`${timestamp} ${chalk.bold.green(type.toUpperCase())} ${content} `);
     }
     case "CMD": {
       return console.log(`${timestamp} ${chalk.black.bgWhite(type.toUpperCase())} ${content}`);
